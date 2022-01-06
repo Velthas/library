@@ -10,3 +10,10 @@ function Book (name, pages, read) {
 function addBookToLibrary () {
     //TODO: Get the information from a form and use it to create a book, then use that info to create a book card
 }
+
+function displayBooks(arrayOfBooks) {
+    for(let i = 0; i < arrayOfBooks.length; i++) {
+        
+    }
+
+}
