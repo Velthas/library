@@ -46,28 +46,107 @@ body {
     cursor: pointer;
 }
 
-.bubble:hover {
+.bubble:hover,
+.submit:hover {
     transition: transform ease 0.3s;
     transform: translateY(-5px);
 }
 
-.theDiv {
-    display: none;
-    width: 400px;
+#formWindow {
+    display: block;
+    width: 350px;
     height: 500px;
     position: fixed;
     background-color: white;
-    opacity: 70%;
+    opacity: 100%;
     transform: translate(-50%, -50%);
     left: 50%;
     top: 50%;
+    border-radius: 15px;
+    box-shadow: #009688 0px 0px 80px 1px;
 
 }
 
-.formContainer {
+#formBackdrop {
+    display: block;
     position: fixed;
     height: 100%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.4);
-    
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    gap: 24px;
+    padding: 16px;
+}
+
+.formContainer img {
+    height:25px;
+    align-self: flex-end;
+}
+
+label,
+form {
+    display: block;
+}
+
+.formContainer form {
+    text-align: center;
+    height: 350px;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    color: black;
+    font-size: 18px;
+}
+
+.formContainer input {
+    width: 300px;
+    height: 50px;
+    font-size: 15px;
+    background-color: #e2fde8;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    color: #236874;
+    margin: 5px 0px 16px 0px;
+}
+
+input::placeholder {
+    color: #236874
+}
+
+form button {
+    width: 120px;
+    height: 35px;
+    margin-top: 5px;
+    background-color: rgb(219, 93, 118);
+    border: 1px solid darkred;
+    color: darkred;
+    font-size: 15px;
+}
+
+.bookRead {
+    border: 1px solid green;
+    background-color: limegreen;
+    color: green;
+}
+
+button.submit{
+    width: 35px;
+    height: 35px;
+    background-color: #042925;
+    color: #e6edef;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
 }
