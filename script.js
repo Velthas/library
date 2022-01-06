@@ -1,4 +1,4 @@
-const myLibrary = [];
+const myLibrary = [{'name': 'The Hobbit', 'pages': 300, 'read': 'yes'}];
 
 //Constructor for books
 function Book (name, pages, read) {

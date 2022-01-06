@@ -53,7 +53,7 @@ body {
 }
 
 #formWindow {
-    display: block;
+    display: none;
     width: 350px;
     height: 500px;
     position: fixed;
@@ -68,7 +68,7 @@ body {
 }
 
 #formBackdrop {
-    display: block;
+    display: none;
     position: fixed;
     height: 100%;
     width: 100%;
@@ -149,4 +149,53 @@ button.submit{
     cursor: pointer;
     font-size: 20px;
     font-weight: bold;
+}
+
+#library {
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    flex-wrap: wrap;
+    width: 90%;
+}
+
+.book {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items:center;
+    width: 250px;
+    height: 300px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 2px;
+    border-top-right-radius: 5px;
+}
+
+.shadowOne {
+    background-color: rosybrown;
+    box-shadow: -15px -10px 0px 0px snow,
+    -25px -15px 0px 0px lightgrey,
+     0px -20px 0px 0px #9f716e,
+   -35px -20px 0px 0px rosybrown;
+}
+
+.shadowTwo{
+
+}
+
+.shadowThree{
+
+}
+
+.book img {
+    height:100px;
+}
+
+.book p {
+font-size: 25px;
+}
+
+.book p.title {
+    font-size: 30px;
+    text-align: center;
 }
