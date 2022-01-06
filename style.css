@@ -156,7 +156,9 @@ button.submit{
     flex-direction: row;
     justify-content:flex-start;
     flex-wrap: wrap;
-    width: 90%;
+    width: 100%;
+    padding: 40px 15px 90px 60px;
+    gap: 80px;
 }
 
 .book {
@@ -180,11 +182,19 @@ button.submit{
 }
 
 .shadowTwo{
-
+    background-color: #d34747;
+    box-shadow: -15px -10px 0px 0px snow,
+    -25px -15px 0px 0px lightgrey,
+     0px -20px 0px 0px #a12c24,
+   -35px -20px 0px 0px #d34747;
 }
 
 .shadowThree{
-
+    background-color: #2b2c56;
+    box-shadow: -15px -10px 0px 0px snow,
+    -25px -15px 0px 0px lightgrey,
+     0px -20px 0px 0px #100f2e,
+   -35px -20px 0px 0px #2b2c56;
 }
 
 .book img {
@@ -198,4 +208,8 @@ font-size: 25px;
 .book p.title {
     font-size: 30px;
     text-align: center;
+}
+
+p.progress {
+    display:inline;
 }
