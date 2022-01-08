@@ -226,3 +226,19 @@ p.progress {
     width: 45vw;
     margin: 16px;
 }
+
+.deleteBook {
+    width: 18px;
+    height: 18px;
+    align-self: flex-end;
+    margin: 5px 10px 0px 0px;
+    background-color: #c42020;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.deleteBook:hover {
+    background-color: maroon;
+}

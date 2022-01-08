@@ -104,6 +104,16 @@ function createBookDivs (arrayOfStyles, book, arrayIndex) {
     }
 
     //Now create the contents of the book
+
+    //Delete Button 
+    const deleteButton = document.createElement('div');
+    deleteButton.classList.add('deleteBook');
+    deleteButton.textContent = 'x';
+    newBook.appendChild(deleteButton);
+
+    //Add functionality to delete book
+    deleteButton.addEventListener('click', () => {deleteBook(arrayIndex)})
+
     //Title section
     const titleContainer = document.createElement('div');
     titleContainer.classList.add('center');
@@ -224,4 +234,14 @@ function removeErrorDiv () {
         divToAppendTo.removeChild(errorReportDiv)
     }
     else return;
+}
+
+function deleteBook (arrayIndex) {
+    myLibrary.splice(arrayIndex, 1);
+
+    if(myLibrary.length === 0){
+        return;
+    }
+
+    displayBooks(myLibrary);
 }
