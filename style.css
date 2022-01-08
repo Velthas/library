@@ -88,6 +88,11 @@ body {
 .formContainer img {
     height:25px;
     align-self: flex-end;
+    transition: filter ease 0.3s;
+}
+
+.formContainer img:hover {
+    filter: brightness(80%);
 }
 
 label,
@@ -121,22 +126,6 @@ form {
 
 input::placeholder {
     color: #236874
-}
-
-form button {
-    width: 120px;
-    height: 35px;
-    margin-top: 5px;
-    background-color: rgb(219, 93, 118);
-    border: 1px solid darkred;
-    color: darkred;
-    font-size: 15px;
-}
-
-.bookRead {
-    border: 1px solid green;
-    background-color: limegreen;
-    color: green;
 }
 
 button.submit{
@@ -200,6 +189,12 @@ button.submit{
 .book img {
     height:100px;
 }
+.center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
 .book p {
 font-size: 25px;
@@ -212,4 +207,22 @@ font-size: 25px;
 
 p.progress {
     display:inline;
+    margin: 10px;
+}
+
+#settings {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.errorReport {
+    padding: 8px;
+    border-radius: 10px;
+    background-color: #fe4c61;
+    color: #ffc0c5;
+    height: auto;
+    width: 45vw;
+    margin: 16px;
 }
