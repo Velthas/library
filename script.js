@@ -61,12 +61,18 @@ function addBookToLibrary () {
 
     //Call the constructor
     const newObject = new Book(verifiedData.name, verifiedData.progress, verifiedData.finished);
+    newObject.pagesRead = Number(verifiedData.pagesRead);
+    newObject.pagesTotal = Number(verifiedData.pagesTotal);
 
     //Store it in the array of books
     myLibrary.push(newObject);
 
     //Generate the library
     displayBooks(myLibrary);
+
+    //Resets the form;
+    form.reset();
+
     closeForm();
 
 }
@@ -158,6 +164,9 @@ function createBookDivs (arrayOfStyles, book, arrayIndex) {
     //TODO: Prepare to add the event listeners for the buttons
     progressElements.forEach(node => progressContainer.appendChild(node));
     progressParagraph.textContent = book.pages;
+    
+    increaseButton.addEventListener('click', () => alterProgress(1, book, progressParagraph, statusContainer))
+    decreaseButton.addEventListener('click', () => alterProgress(2, book, progressParagraph, statusContainer))
 
     
     if(book.read === true) {
@@ -187,21 +196,21 @@ function clearLibrary () {
 //This function checks the input to verify no data is missing.
 function checkFormContent (data) {
 
-    switch (true) {
-
-        case data.name === "" || data.pagesTotal === "" || data.pagesRead === "":
+    if (data.name === "" || data.pagesTotal === "" || data.pagesRead === "") {
             data.missinginput = 1;
             errorReportDiv.textContent = "For a book to be added, all input fields have to be filled"
             divToAppendTo.appendChild(errorReportDiv);
             return data;
+    }
 
-        case (Number(data.pagesTotal) === NaN || Number(data.pagesTotal) < Number(data.pagesRead)):
+    if(isNaN(Number(data.pagesTotal)) || Number(data.pagesTotal) < Number(data.pagesRead)) {
             data.missinginput = 1;
             errorReportDiv.textContent = "Number of total pages has to be a number and cannot be less than the number of pages read"
             divToAppendTo.appendChild(errorReportDiv);
             return data;
-
-        case (Number(data.pagesRead) === NaN):
+    }
+    
+    if (Number(data.pagesRead) === NaN){
             data.missinginput = 1;
             errorReportDiv.textContent = "Number of pages read must be a number"
             divToAppendTo.appendChild(errorReportDiv);
@@ -239,9 +248,41 @@ function removeErrorDiv () {
 function deleteBook (arrayIndex) {
     myLibrary.splice(arrayIndex, 1);
 
-    if(myLibrary.length === 0){
+    if(!Array.isArray(myLibrary) && !myLibrary.length){
         return;
     }
 
     displayBooks(myLibrary);
+}
+
+function alterProgress(operator, bookObject, paragraphNode, StatusContainerNode) {
+    
+    if (operator === 1) {
+        if (bookObject.pagesRead !== bookObject.pagesTotal) {
+            bookObject.pagesRead += 1
+        }
+
+    }
+    else if(operator === 2) {
+        if (bookObject.pagesRead === 0) {
+            return;
+        }
+        else {
+            bookObject.pagesRead -= 1
+        }
+    }
+
+    paragraphNode.textContent = bookObject.pagesRead + "/" + bookObject.pagesTotal;
+    bookObject.pages = bookObject.pagesRead + "/" + bookObject.pagesTotal
+
+    if (bookObject.pagesRead === bookObject.pagesTotal) {
+        bookObject.read = true
+        StatusContainerNode.textContent = "Finished"
+    }
+    else {
+        bookObject.read = false;
+        StatusContainerNode.textContent = "Unfinished"
+    }
+
+
 }

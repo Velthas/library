@@ -8,7 +8,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #042925;
+    background-color: #c38f52;
     color: #e6edef;
     gap: 12px;
 }
@@ -19,7 +19,7 @@ body {
     justify-content: center;
     align-items: center;
     height:20vh;
-    color: #e6edef;
+    color: #fdfffa;
     font-size: 30px;
     margin: 20px 0px;
 }
@@ -28,7 +28,7 @@ body {
     font-size: 25px;
     text-align: center;
     width: 40vw;
-    color: #8eaaa9
+    color: #fdfffa;
 }
 
 .bubble {
@@ -40,8 +40,8 @@ body {
     font-size: 100px;
     width: 85px;
     height: 85px;
-    background-color: #e6edef;
-    color: #042925;
+    background-color: #783320;
+    color: #fffeff;
     border-radius: 50px;
     cursor: pointer;
 }
@@ -63,7 +63,7 @@ body {
     left: 50%;
     top: 50%;
     border-radius: 15px;
-    box-shadow: #009688 0px 0px 80px 1px;
+    box-shadow: #141616 0px 0px 80px 1px;
 
 }
 
@@ -116,22 +116,22 @@ form {
     width: 300px;
     height: 50px;
     font-size: 15px;
-    background-color: #e2fde8;
+    background-color: #efd4ad;
     border: none;
     border-radius: 5px;
     padding: 10px;
-    color: #236874;
+    color: #85673a;
     margin: 5px 0px 16px 0px;
 }
 
 input::placeholder {
-    color: #236874
+    color: #78878a
 }
 
 button.submit{
     width: 35px;
     height: 35px;
-    background-color: #042925;
+    background-color: #783320;
     color: #e6edef;
     border-radius: 50px;
     border: none;
@@ -143,7 +143,7 @@ button.submit{
 #library {
     display: flex;
     flex-direction: row;
-    justify-content:flex-start;
+    justify-content:space-around;
     flex-wrap: wrap;
     width: 100%;
     padding: 40px 15px 90px 60px;
@@ -159,23 +159,23 @@ button.submit{
     height: 300px;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 2px;
-    border-top-right-radius: 5px;
+    border-top-right-radius: 30px;
 }
 
 .shadowOne {
-    background-color: rosybrown;
+    background-color: #b3b28b;
     box-shadow: -15px -10px 0px 0px snow,
     -25px -15px 0px 0px lightgrey,
-     0px -20px 0px 0px #9f716e,
-   -35px -20px 0px 0px rosybrown;
+     0px -20px 0px 0px #8f8e6b,
+   -35px -20px 0px 0px #b3b28b;
 }
 
 .shadowTwo{
-    background-color: #d34747;
+    background-color: #b4a3d2;
     box-shadow: -15px -10px 0px 0px snow,
     -25px -15px 0px 0px lightgrey,
-     0px -20px 0px 0px #a12c24,
-   -35px -20px 0px 0px #d34747;
+     0px -20px 0px 0px #a794c9,
+   -35px -20px 0px 0px #b4a3d2;
 }
 
 .shadowThree{
