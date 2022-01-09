@@ -21,7 +21,7 @@ body {
     height:20vh;
     color: #fdfffa;
     font-size: 30px;
-    margin: 20px 0px;
+    margin: 25px 0px;
     font-family: 'Bebas Neue', cursive;
 }
 
@@ -33,11 +33,19 @@ body {
     font-family: 'Lobster', cursive;
 }
 
+#settings {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
 .bubble {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 20px 0;
+    margin: 30px 0;
     font-weight: 600;
     font-size: 100px;
     width: 85px;
@@ -214,8 +222,6 @@ button.submit{
     background-color: #151538;
 }
 
-
-
 .book img {
     height:100px;
 }
@@ -238,13 +244,6 @@ font-size: 25px;
 p.progress {
     display:inline;
     margin: 10px;
-}
-
-#settings {
-    display:flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
 .errorReport {
@@ -309,6 +308,19 @@ p.progress {
     .formContainer input {
         width: 200px;
         font-size: 12px;
+    }
+
+}
+
+@media screen and (max-width: 210px) {
+
+    #settings {
+        margin-top: 30px;
+    }
+
+    #header p {
+        width: 100vw;
+        font-size: 12
     }
 
 }
