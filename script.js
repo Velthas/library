@@ -256,6 +256,7 @@ function removeErrorDiv () {
     else return;
 }
 
+//Deletes all the book on the library div
 function deleteBook (arrayIndex) {
     myLibrary.splice(arrayIndex, 1);
 
@@ -266,6 +267,7 @@ function deleteBook (arrayIndex) {
     displayBooks(myLibrary);
 }
 
+//This function enables the functionality of the + and - buttons on each book
 function alterProgress(operator, bookObject, paragraphNode, StatusContainerNode) {
     
     if (operator === 1) {
