@@ -3,6 +3,7 @@ const myLibrary = [];
 
 //I will use this to randomly select a style for each book
 const myStyles = ['shadowOne', 'shadowTwo', 'shadowThree'];
+const buttonStyles = ['buttonOne', 'buttonTwo', 'buttonThree'];
 
 //Get the form nodes to use in functions later
 const formBackdrop = document.querySelector('#formBackdrop');
@@ -92,20 +93,22 @@ function displayBooks(arrayOfBooks) {
 
 //This function is responsible for creating the whole 'book' div to be displayed on the page.
 function createBookDivs (arrayOfStyles, book, arrayIndex) {
-    const library = document.querySelector('#library')
+    const library = document.querySelector('#library');
 
     //Generate the main container
     const newBook = document.createElement('div');
-    newBook.setAttribute('data-bookindex', `${arrayIndex}`)
+    newBook.setAttribute('data-bookindex', `${arrayIndex}`);
     newBook.classList.add('book');
+
+    //Calculate a random number to apply style
+    const randomNumber = Math.floor(Math.random() * 3);
 
     //If the book has already been assigned a style, use that one, otherwise get a random one.
     if (book.style) {
         newBook.classList.add(book.style);
     }
     else {
-    const randomNumber = Math.floor(Math.random() * 3);
-    book.style = arrayOfStyles[randomNumber]
+    book.style = arrayOfStyles[randomNumber];
     newBook.classList.add(book.style);
     }
 
@@ -137,12 +140,9 @@ function createBookDivs (arrayOfStyles, book, arrayIndex) {
     progressParagraph.classList.add('progress');
 
     const increaseButton = document.createElement('button');
-    increaseButton.textContent = '+'
+    increaseButton.textContent = '+';
     const decreaseButton = document.createElement('button');
-    decreaseButton.textContent = '-'
-
-    const buttons = [increaseButton, decreaseButton];
-    buttons.forEach(button => button.classList.add('submit'));
+    decreaseButton.textContent = '-';
 
     const progressElements = [increaseButton, progressParagraph, decreaseButton];
 
@@ -161,12 +161,23 @@ function createBookDivs (arrayOfStyles, book, arrayIndex) {
         titleParagraph.setAttribute('style', 'font-size: 22px;');
     }
 
-    //TODO: Prepare to add the event listeners for the buttons
     progressElements.forEach(node => progressContainer.appendChild(node));
     progressParagraph.textContent = book.pages;
     
-    increaseButton.addEventListener('click', () => alterProgress(1, book, progressParagraph, statusContainer))
-    decreaseButton.addEventListener('click', () => alterProgress(2, book, progressParagraph, statusContainer))
+    //Add Event Listeners and appropriate style to the buttons
+    increaseButton.addEventListener('click', () => alterProgress(1, book, progressParagraph, statusContainer));
+
+    decreaseButton.addEventListener('click', () => alterProgress(2, book, progressParagraph, statusContainer));
+
+    if (book.buttonStyle) {
+        increaseButton.classList.add(book.buttonStyle);
+        decreaseButton.classList.add(book.buttonStyle)
+    }
+    else {
+    book.buttonStyle = buttonStyles[randomNumber];
+    increaseButton.classList.add(book.buttonStyle);
+    decreaseButton.classList.add(book.buttonStyle);
+    }
 
     
     if(book.read === true) {

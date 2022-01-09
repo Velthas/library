@@ -22,6 +22,7 @@ body {
     color: #fdfffa;
     font-size: 30px;
     margin: 20px 0px;
+    font-family: 'Bebas Neue', cursive;
 }
 
 #header p {
@@ -29,6 +30,7 @@ body {
     text-align: center;
     width: 40vw;
     color: #fdfffa;
+    font-family: 'Lobster', cursive;
 }
 
 .bubble {
@@ -151,6 +153,7 @@ button.submit{
 }
 
 .book {
+    font-family: 'Lobster', cursive;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -185,6 +188,33 @@ button.submit{
      0px -20px 0px 0px #2b2c56,
    -35px -20px 0px 0px #2b2c56;
 }
+
+.buttonOne,
+.buttonTwo,
+.buttonThree {
+    width: 35px;
+    height: 35px;
+    color: #e6edef;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.buttonOne {
+    background-color: #839b69;
+}
+
+.buttonTwo {
+    background-color: #847899;
+}
+
+.buttonThree {
+    background-color: #151538;
+}
+
+
 
 .book img {
     height:100px;
@@ -237,8 +267,48 @@ p.progress {
     text-align: center;
     cursor: pointer;
     font-weight: bold;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
 .deleteBook:hover {
     background-color: maroon;
+}
+
+@media screen and (max-width: 700px) {
+    #header {
+        font-size: 20px;
+        margin-bottom: 0
+    }
+
+    #header p {
+        font-size: 15px;
+        width: 60vw
+    }
+
+    .bubble {
+        width: 50px;
+        height: 50px;
+        font-size: 30px;
+        margin-top: 0;
+    }
+
+    #formWindow {
+        width: 280px;
+        height: 450px;
+    }
+
+    .formContainer {
+        gap: 0px;
+    }
+
+    .formContainer form {
+        font-size: 15px;
+        width: 250px;
+    }
+
+    .formContainer input {
+        width: 200px;
+        font-size: 12px;
+    }
+
 }
