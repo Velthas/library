@@ -1,301 +1,183 @@
-//Array to store all books
-const myLibrary = [];
+/* eslint-disable linebreak-style */
+const Book = (bname, tot, read) => {
+  const name = bname;
+  const pageTot = Number(tot);
+  let pageRead = Number(read);
+  let style = false; // Will be assigned a string in DomElements.createBookDiv
 
-//I will use this to randomly select a style for each book
-const myStyles = ['shadowOne', 'shadowTwo', 'shadowThree'];
-const buttonStyles = ['buttonOne', 'buttonTwo', 'buttonThree'];
+  const readPage = () => { pageRead = pageRead < pageTot ? pageRead += 1 : pageRead; };
+  const unreadPage = () => { pageRead = pageRead === 0 ? pageRead : pageRead -= 1; };
+  const getName = () => name.slice();
+  const getTot = () => pageTot;
+  const getRead = () => pageRead;
 
-//Get the form nodes to use in functions later
-const formBackdrop = document.querySelector('#formBackdrop');
-const formWindow = document.querySelector('#formWindow');
+  return { getName, getTot, getRead, style, readPage, unreadPage };
+};
 
-//Make it so submitting the form sends the info to the javascript code.
-const submitBtn = document.querySelector('.submit');
-submitBtn.addEventListener('click', addBookToLibrary);
+const Library = () => {
+  const library = [];
 
-//This allows the button on the main page to open up the form to add book
-const openFormButton = document.querySelector('.bubble');
-openFormButton.addEventListener('click', displayForm);
+  const add = (book) => library.push(book);
+  const remove = (book) => library.splice(library.indexOf(book), 1);
+  const getBooks = () => library;
 
-//Enable users to quit out of the form
-const closeFormButton = document.querySelector('#closeForm');
-closeFormButton.addEventListener('click', closeForm);
+  return { add, remove, getBooks };
+};
 
-//Create a div to report user mistakes
-const errorReportDiv = document.createElement('div');
-errorReportDiv.classList.add('errorReport');
-const divToAppendTo = document.querySelector('#settings');
+const DomElements = (() => {
+  const getBookData = () => Array.from(document.querySelectorAll('#bookinfo input')).map((input) => input.value);
 
-//Constructor for books
-function Book (name, pages, read) {
-    this.name = name;
-    this.pages = pages;
-    this.read = read;
-}
-
-//This function extracts the content of the form, sends it to be verified, then adds it to the array.
-function addBookToLibrary () {
-
-    const form = document.querySelector('#bookinfo');
-    let title = form.elements[0].value;
-    let pagesTotal = form.elements[1].value;
-    let pagesRead = form.elements[2].value;
-
-    //create an object with the data and pass it to the function to check
-    const data = {'name': title, 
-    'pagesTotal': pagesTotal,
-    'pagesRead': pagesRead,
-    'finished': "",
+  const isInputComplete = (data) => {
+    const [name, total, read] = data;
+    let msg = false;
+    if (name === '' || total === '' || read === '') {
+      msg = 'Please fill all input fields.';
+      return msg;
+    } if (Number(total) < Number(read)) {
+      msg = 'Pages read cannot exceed pages total';
+      return msg;
+    } if (isNaN(Number(read)) || isNaN(Number(total))) {
+      msg = 'Pages must be a number';
+      return msg;
+    } if (total < 0 || read < 0) {
+      msg = 'Pages must be a positive number';
+      return msg;
     }
+    return msg;
+  };
 
-    //This returns an object with the verified data
-    const verifiedData = checkFormContent(data);
+  const setupListeners = () => {
+    const openFormButton = document.querySelector('.bubble');
+    const closeFormButton = document.querySelector('#closeForm');
+    const addBookButton = document.querySelector('#submit-book');
 
-    //If missinginput is present, it means something went wrong, so return if it happens.
-    if(verifiedData.missinginput !== undefined){
-        closeForm();
-        return;
-    }
+    closeFormButton.addEventListener('click', toggleForm);
+    openFormButton.addEventListener('click', () => {
+      toggleForm();
+      hideErrorDiv();
+    });
+    addBookButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      App.addBook();
+      toggleForm();
+    });
+  };
 
-    //Create this field to be displayed to users.
-    verifiedData.progress = verifiedData.pagesRead + "/" + verifiedData.pagesTotal;
+  const showErrorDiv = (message) => {
+    const errorDiv = document.querySelector('#error');
+    errorDiv.textContent = message;
+    errorDiv.setAttribute('class', '');
+  };
 
-    //Call the constructor
-    const newObject = new Book(verifiedData.name, verifiedData.progress, verifiedData.finished);
-    newObject.pagesRead = Number(verifiedData.pagesRead);
-    newObject.pagesTotal = Number(verifiedData.pagesTotal);
+  const hideErrorDiv = () => document.querySelector('#error').setAttribute('class', 'hidden');
 
-    //Store it in the array of books
-    myLibrary.push(newObject);
+  const resetForm = () => document.querySelectorAll('#bookinfo input').forEach((node) => node.value = '');
 
-    //Generate the library
-    displayBooks(myLibrary);
+  const toggleForm = () => {
+    resetForm();
+    document.querySelector('#formBackdrop').classList.toggle('hidden');
+  };
 
-    //Resets the form;
-    form.reset();
+  const resetLibrary = () => document.querySelectorAll('.book').forEach(node => node.remove());
 
-    closeForm();
+  const updateProgress = (progressNode, statusNode, book) => {
+    progressNode.textContent = `${book.getRead()}/${book.getTot()}`;
+    if (book.getRead() === book.getTot()) statusNode.textContent = 'Finished';
+    else statusNode.textContent = 'Unfinished';
+  };
 
-}
-
-//Loops through the array of objects and calls createBookDivs for each one.
-function displayBooks(arrayOfBooks) {
-
-    clearLibrary();
-
-    for(let i = 0; i < arrayOfBooks.length; i++) {
-        
-        createBookDivs (myStyles, arrayOfBooks[i], i);
-        
-    }
-
-}
-
-//This function is responsible for creating the whole 'book' div to be displayed on the page.
-function createBookDivs (arrayOfStyles, book, arrayIndex) {
+  function createBookDiv(book) {
+    const style = ['shadowOne', 'shadowTwo', 'shadowThree']; // these are equivalent to a class
     const library = document.querySelector('#library');
 
-    //Generate the main container
-    const newBook = document.createElement('div');
-    newBook.setAttribute('data-bookindex', `${arrayIndex}`);
-    newBook.classList.add('book');
-
-    //Calculate a random number to apply style
-    const randomNumber = Math.floor(Math.random() * 3);
-
-    //If the book has already been assigned a style, use that one, otherwise get a random one.
-    if (book.style) {
-        newBook.classList.add(book.style);
-    }
-    else {
-    book.style = arrayOfStyles[randomNumber];
-    newBook.classList.add(book.style);
-    }
-
-    //Now create the contents of the book
-
-    //Delete Button 
+    const newBook = document.createElement('div'); // main container
     const deleteButton = document.createElement('div');
-    deleteButton.classList.add('deleteBook');
-    deleteButton.textContent = 'x';
-    newBook.appendChild(deleteButton);
-
-    //Add functionality to delete book
-    deleteButton.addEventListener('click', () => {deleteBook(arrayIndex)})
-
-    //Title section
     const titleContainer = document.createElement('div');
-    titleContainer.classList.add('center');
     const titleParagraph = document.createElement('p');
-    titleParagraph.classList.add('title');
-
     const fancyDivider = document.createElement('img');
-    fancyDivider.setAttribute('src', './images/divider.svg');
-    fancyDivider.setAttribute('alt', 'a fancy divider');
-    const titleElements = [titleParagraph, fancyDivider];
-
-    //Progress section
     const progressContainer = document.createElement('div');
     const progressParagraph = document.createElement('p');
-    progressParagraph.classList.add('progress');
-
     const increaseButton = document.createElement('button');
-    increaseButton.textContent = '+';
     const decreaseButton = document.createElement('button');
-    decreaseButton.textContent = '-';
-
-    const progressElements = [increaseButton, progressParagraph, decreaseButton];
-
-    //Status section
     const statusContainer = document.createElement('p');
+
+    const randomNumber = Math.floor(Math.random() * 3);
+
+    newBook.classList.add('book');
+    if (!book.style) book.style = style[randomNumber];
+    newBook.classList.add(book.style);
+    deleteButton.classList.add('deleteBook');
+    titleContainer.classList.add('center');
+    titleParagraph.classList.add('title');
+    if (book.getName().split('').length > 17) titleParagraph.setAttribute('style', 'font-size: 22px;');
+    fancyDivider.setAttribute('src', './images/divider.svg');
+    fancyDivider.setAttribute('alt', 'a fancy divider');
+    progressParagraph.classList.add('progress');
     statusContainer.classList.add('status');
 
-    const mainContainers = [titleContainer, progressContainer, statusContainer];
+    deleteButton.addEventListener('click', () => { App.removeBook(book); });
+    increaseButton.addEventListener('click', () => {
+      book.readPage();
+      updateProgress(progressParagraph, statusContainer, book);
+    });
+    decreaseButton.addEventListener('click', () => {
+      book.unreadPage();
+      updateProgress(progressParagraph, statusContainer, book);
+    });
 
-    //Put together the whole book
-    mainContainers.forEach(container => newBook.appendChild(container));
-
-    titleElements.forEach(node => titleContainer.appendChild(node));
-    titleParagraph.textContent = book.name;
-    if (book.name.split("").length > 17) {
-        titleParagraph.setAttribute('style', 'font-size: 22px;');
-    }
-
-    progressElements.forEach(node => progressContainer.appendChild(node));
-    progressParagraph.textContent = book.pages;
-    
-    //Add Event Listeners and appropriate style to the buttons
-    increaseButton.addEventListener('click', () => alterProgress(1, book, progressParagraph, statusContainer));
-
-    decreaseButton.addEventListener('click', () => alterProgress(2, book, progressParagraph, statusContainer));
-
-    if (book.buttonStyle) {
-        increaseButton.classList.add(book.buttonStyle);
-        decreaseButton.classList.add(book.buttonStyle)
-    }
-    else {
-    book.buttonStyle = buttonStyles[randomNumber];
-    increaseButton.classList.add(book.buttonStyle);
-    decreaseButton.classList.add(book.buttonStyle);
-    }
-
-    
-    if(book.read === true) {
-        statusContainer.textContent = 'Finished';
-    }
+    deleteButton.textContent = 'x';
+    increaseButton.textContent = '+';
+    decreaseButton.textContent = '-';
+    titleParagraph.textContent = book.getName();
+    progressParagraph.textContent = `${book.getRead()}/${book.getTot()}`;
+    if (book.getRead() === book.getTot()) statusContainer.textContent = 'Finished';
     else statusContainer.textContent = 'Unfinished';
 
-    //Finally append the book
+    const titleElements = [titleParagraph, fancyDivider];
+    const progressElements = [increaseButton, progressParagraph, decreaseButton];
+    const mainContainers = [titleContainer, progressContainer, statusContainer];
+    newBook.appendChild(deleteButton);
+    titleElements.forEach((node) => titleContainer.appendChild(node));
+    progressElements.forEach((node) => progressContainer.appendChild(node));
+    mainContainers.forEach((container) => newBook.appendChild(container));
+
     library.appendChild(newBook);
-}
+  }
 
-//Paired with the button on the main page through event listener to open the form.
-function displayForm () {
-    const form = [formBackdrop, formWindow]
-    form.forEach(node => node.setAttribute('style', 'display: block;'))
-    removeErrorDiv();
-}
+  setupListeners();
 
-//As it stands, I do not just append the new books but recreate the display on each go.
-//This clears the whole library section of the page.
-function clearLibrary () {
-    const allBooks = Array.from(document.querySelectorAll('.book'))
-    allBooks.forEach(node => node.remove())
-    
-}
+  return { getBookData, isInputComplete, showErrorDiv, hideErrorDiv, toggleForm, createBookDiv, resetLibrary };
+})();
 
-//This function checks the input to verify no data is missing.
-function checkFormContent (data) {
+const App = (() => {
+  const library = Library();
 
-    if (data.name === "" || data.pagesTotal === "" || data.pagesRead === "") {
-            data.missinginput = 1;
-            errorReportDiv.textContent = "For a book to be added, all input fields have to be filled"
-            divToAppendTo.appendChild(errorReportDiv);
-            return data;
+  const showProjects = () => {
+    const books = library.getBooks();
+    for (let i = 0; i < books.length; i++) {
+      DomElements.createBookDiv(books[i]);
     }
+  };
 
-    if(isNaN(Number(data.pagesTotal)) || Number(data.pagesTotal) < Number(data.pagesRead)) {
-            data.missinginput = 1;
-            errorReportDiv.textContent = "Number of total pages has to be a number and cannot be less than the number of pages read"
-            divToAppendTo.appendChild(errorReportDiv);
-            return data;
+  const addBook = () => {
+    const data = DomElements.getBookData();
+    const somethingWrong = DomElements.isInputComplete(data);
+    if (somethingWrong) {
+      DomElements.showErrorDiv(somethingWrong);
+      return;
     }
-    
-    if (Number(data.pagesRead) === NaN){
-            data.missinginput = 1;
-            errorReportDiv.textContent = "Number of pages read must be a number"
-            divToAppendTo.appendChild(errorReportDiv);
-            return data;
+    const [name, total, read] = data;
+    const book = Book(name, total, read);
+    library.add(book);
+    DomElements.resetLibrary();
+    showProjects();
+  };
 
-    }
+  const removeBook = (book) => {
+    library.remove(book);
+    DomElements.resetLibrary();
+    showProjects();
+  };
 
-    //Get information on the book's progress and store it
-    if(data.pagesRead === data.pagesTotal) {
-        data.finished = true;
-    }
-    else data.finished = false;
-
-    //This means everything is okay
-    return data;
-
-}
-
-//This function is used to remove the form upon adding a book or closing the form window.
-function closeForm () { 
-    const form = [formBackdrop, formWindow];
-    form.forEach(node => { node.style.display = "none"; }
-    )
-}
-
-//This function removes the Error Div upon opening the form.
-function removeErrorDiv () {
-    const errorDiv = document.querySelector('.errorReport');
-    if (errorDiv) {
-        divToAppendTo.removeChild(errorReportDiv)
-    }
-    else return;
-}
-
-//Deletes all the book on the library div
-function deleteBook (arrayIndex) {
-    myLibrary.splice(arrayIndex, 1);
-
-    if(!Array.isArray(myLibrary) && !myLibrary.length){
-        return;
-    }
-
-    displayBooks(myLibrary);
-}
-
-//This function enables the functionality of the + and - buttons on each book
-function alterProgress(operator, bookObject, paragraphNode, StatusContainerNode) {
-    
-    if (operator === 1) {
-        if (bookObject.pagesRead !== bookObject.pagesTotal) {
-            bookObject.pagesRead += 1
-        }
-
-    }
-    else if(operator === 2) {
-        if (bookObject.pagesRead === 0) {
-            return;
-        }
-        else {
-            bookObject.pagesRead -= 1
-        }
-    }
-
-    paragraphNode.textContent = bookObject.pagesRead + "/" + bookObject.pagesTotal;
-    bookObject.pages = bookObject.pagesRead + "/" + bookObject.pagesTotal
-
-    if (bookObject.pagesRead === bookObject.pagesTotal) {
-        bookObject.read = true
-        StatusContainerNode.textContent = "Finished"
-    }
-    else {
-        bookObject.read = false;
-        StatusContainerNode.textContent = "Unfinished"
-    }
-
-
-}
+  return { addBook, removeBook };
+})();

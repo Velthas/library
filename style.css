@@ -63,7 +63,6 @@ body {
 }
 
 #formWindow {
-    display: none;
     width: 350px;
     height: 500px;
     position: fixed;
@@ -78,11 +77,14 @@ body {
 }
 
 #formBackdrop {
-    display: none;
     position: fixed;
     height: 100%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.4);
+}
+
+#formBackdrop.hidden {
+    display: none;
 }
 
 .formContainer {
@@ -168,38 +170,34 @@ button.submit{
     align-items:center;
     width: 250px;
     height: 300px;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 2px;
-    border-top-right-radius: 30px;
+    border-top-left-radius: 16px;
 }
 
 .shadowOne {
     background-color: #b3b28b;
-    box-shadow: -15px -10px 0px 0px snow,
-    -25px -15px 0px 0px lightgrey,
-     0px -20px 0px 0px #b3b28b,
-   -35px -20px 0px 0px #b3b28b;
+    box-shadow: 15px -10px 0px 0px snow,
+    25px -15px 0px 0px lightgrey,
+    0px -20px 0px 0px #b3b28b,
+    35px -20px 0px 0px #b3b28b;
 }
 
 .shadowTwo{
     background-color: #b4a3d2;
-    box-shadow: -15px -10px 0px 0px snow,
-    -25px -15px 0px 0px lightgrey,
-     0px -20px 0px 0px #b4a3d2,
-   -35px -20px 0px 0px #b4a3d2;
+    box-shadow: 15px -10px 0px 0px snow,
+    25px -15px 0px 0px lightgrey,
+    0px -20px 0px 0px #b4a3d2,
+    35px -20px 0px 0px #b4a3d2;
 }
 
 .shadowThree{
     background-color: #2b2c56;
-    box-shadow: -15px -10px 0px 0px snow,
-    -25px -15px 0px 0px lightgrey,
-     0px -20px 0px 0px #2b2c56,
-   -35px -20px 0px 0px #2b2c56;
+    box-shadow: 15px -10px 0px 0px snow,
+    25px -15px 0px 0px lightgrey,
+    0px -20px 0px 0px #2b2c56,
+    35px -20px 0px 0px #2b2c56;
 }
 
-.buttonOne,
-.buttonTwo,
-.buttonThree {
+.book button {
     width: 35px;
     height: 35px;
     color: #e6edef;
@@ -210,15 +208,15 @@ button.submit{
     font-weight: bold;
 }
 
-.buttonOne {
+.shadowOne button {
     background-color: #839b69;
 }
 
-.buttonTwo {
+.shadowTwo button {
     background-color: #847899;
 }
 
-.buttonThree {
+.shadowThree button {
     background-color: #151538;
 }
 
@@ -246,7 +244,8 @@ p.progress {
     margin: 10px;
 }
 
-.errorReport {
+#error{
+    display: block;
     padding: 8px;
     border-radius: 10px;
     background-color: #fe4c61;
@@ -256,17 +255,28 @@ p.progress {
     margin: 16px;
 }
 
+#error.hidden {
+    display: none;
+}
+
 .deleteBook {
-    width: 18px;
-    height: 18px;
-    align-self: flex-end;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 25px;
+    height: 25px;
     margin: 5px 25px 0px 0px;
+
+    align-self: flex-end;
+
     background-color: #c42020;
     border-radius: 12px;
-    text-align: center;
     cursor: pointer;
+
     font-weight: bold;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-transform: uppercase;
 }
 
 .deleteBook:hover {
