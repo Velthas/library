@@ -1,4 +1,3 @@
-/* eslint-disable linebreak-style */
 const Book = (bname, tot, read) => {
   const name = bname;
   const pageTot = Number(tot);

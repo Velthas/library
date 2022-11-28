@@ -8,9 +8,10 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 12px;
+
     background-color: #c38f52;
     color: #e6edef;
-    gap: 12px;
 }
 
 #header {
@@ -18,19 +19,22 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
     height:20vh;
-    color: #fdfffa;
-    font-size: 30px;
     margin: 25px 0px;
+
+    font-size: 30px;
     font-family: 'Bebas Neue', cursive;
+    color: #fdfffa;
 }
 
 #header p {
-    font-size: 25px;
     text-align: center;
     width: 40vw;
+
     color: #fdfffa;
     font-family: 'Lobster', cursive;
+    font-size: 25px;
 }
 
 #settings {
@@ -38,6 +42,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
     margin-top: 20px;
 }
 
@@ -45,13 +50,17 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 30px 0;
-    font-weight: 600;
-    font-size: 100px;
+
     width: 85px;
     height: 85px;
+    margin: 30px 0;
+
+    font-weight: 600;
+    font-size: 100px;
+
     background-color: #783320;
     color: #fffeff;
+
     border-radius: 50px;
     cursor: pointer;
 }
@@ -66,13 +75,15 @@ body {
     width: 350px;
     height: 500px;
     position: fixed;
-    background-color: white;
-    opacity: 100%;
     transform: translate(-50%, -50%);
     left: 50%;
     top: 50%;
+
+    background-color: white;
+    box-shadow: #383535 2px 2px 12px 3px;
+
+    opacity: 100%;
     border-radius: 15px;
-    box-shadow: #141616 0px 0px 80px 1px;
 
 }
 
@@ -80,6 +91,7 @@ body {
     position: fixed;
     height: 100%;
     width: 100%;
+
     background-color: rgba(0, 0, 0, 0.4);
 }
 
@@ -92,8 +104,10 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: black;
     gap: 24px;
+
+    color: black;
+
     padding: 16px;
 }
 
@@ -113,13 +127,16 @@ form {
 }
 
 .formContainer form {
-    text-align: center;
-    height: 350px;
-    width: 350px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+
+    text-align: center;
+
+    height: 350px;
+    width: 350px;
+
     color: black;
     font-size: 18px;
 }
@@ -128,12 +145,15 @@ form {
     width: 300px;
     height: 50px;
     font-size: 15px;
-    background-color: #efd4ad;
+
     border: none;
     border-radius: 5px;
+
     padding: 10px;
-    color: #85673a;
     margin: 5px 0px 16px 0px;
+
+    background-color: #efd4ad;
+    color: #85673a;
 }
 
 input::placeholder {
@@ -143,10 +163,13 @@ input::placeholder {
 button.submit{
     width: 35px;
     height: 35px;
+
     background-color: #783320;
     color: #e6edef;
+
     border-radius: 50px;
     border: none;
+
     cursor: pointer;
     font-size: 20px;
     font-weight: bold;
@@ -154,22 +177,26 @@ button.submit{
 
 #library {
     display: flex;
-    flex-direction: row;
-    justify-content:space-around;
+    justify-content: space-around;
     flex-wrap: wrap;
-    width: 100%;
-    padding: 40px 15px 90px 60px;
     gap: 80px;
+
+    width: 100%;
+    padding: 40px 60px 90px 15px;
+
+    
 }
 
 .book {
-    font-family: 'Lobster', cursive;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items:center;
+
     width: 250px;
     height: 300px;
+
+    font-family: 'Lobster', cursive;
     border-top-left-radius: 16px;
 }
 
@@ -200,10 +227,13 @@ button.submit{
 .book button {
     width: 35px;
     height: 35px;
+
     color: #e6edef;
+
     border-radius: 50px;
     border: none;
     cursor: pointer;
+
     font-size: 20px;
     font-weight: bold;
 }
@@ -221,7 +251,7 @@ button.submit{
 }
 
 .book img {
-    height:100px;
+    height: 100px;
 }
 .center {
     display: flex;
@@ -231,7 +261,7 @@ button.submit{
 }
 
 .book p {
-font-size: 25px;
+    font-size: 25px;
 }
 
 .book p.title {
@@ -240,18 +270,21 @@ font-size: 25px;
 }
 
 p.progress {
-    display:inline;
+    display: inline;
     margin: 10px;
 }
 
 #error{
     display: block;
-    padding: 8px;
+
     border-radius: 10px;
+
     background-color: #fe4c61;
     color: #ffc0c5;
+
     height: auto;
     width: 45vw;
+    padding: 8px;
     margin: 16px;
 }
 
@@ -323,7 +356,6 @@ p.progress {
 }
 
 @media screen and (max-width: 210px) {
-
     #settings {
         margin-top: 30px;
     }
@@ -332,5 +364,4 @@ p.progress {
         width: 100vw;
         font-size: 12
     }
-
 }
