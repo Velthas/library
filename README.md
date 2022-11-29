@@ -12,7 +12,7 @@ As of 09/01/2022, this small library app is only a front-end project, and as suc
 
 Upon opening the page, the user is presented with the header and a circular button with a "+" sign on it: by clicking it, a form will show up, asking the user for info about the book they wish to store: a name, the amount of total pages and the amount of pages read. By clicking on the small button at the end of the form, the user can then store the book.
 
-An error will occur if: the user specifies a number of pages (either total or read) that is not a number, or if the user specifies a higher amount of pages read than the page total. Any of these conditions will cause the appropriate function to return and display and error div explaining where the process went wrong. 
+An error will occur if: the user specifies a number of pages (either total or read) that is not a number, or if the user specifies a higher amount of pages read than the page total, or if the user specifies a negative number. Any of these conditions will cause the appropriate function to return and display and error div explaining where the process went wrong. 
 
 If every field matches the desired input, the book's data will be processed by an object constructor. Through DOM Manipulation, the relevant frame to house the data will be generated, and Event Listeners will be added to its buttons. A random style will also be selected and stored inside the object to maintain consistency in case of book removal. 
 

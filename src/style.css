@@ -14,14 +14,28 @@ body {
     color: #e6edef;
 }
 
+#header button {
+    padding: 10px 20px;
+    background-color: #fdfffa;
+    color: #c38f52;
+    transition: 0.3s;
+    border: none;
+    border-radius: 3px;
+}
+
+#header button:hover {
+    background-color: #c38f52;
+    color: #fdfffa;
+    border: 1px solid white;
+}
+
 #header {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 
-    height:20vh;
     margin: 25px 0px;
+    gap: 5vh;
 
     font-size: 30px;
     font-family: 'Bebas Neue', cursive;
@@ -45,6 +59,19 @@ body {
 
     margin-top: 20px;
 }
+
+#user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#user-info img {
+    width: 50px;
+    border-radius: 25px;
+}
+
 
 .bubble {
     display: flex;

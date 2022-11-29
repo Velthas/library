@@ -1,3 +1,9 @@
+import signInWithGoogle from './firebase-config';
+
+import divider from './images/divider.svg';
+import cross from './images/Flat_cross_icon.svg';
+import './style.css';
+
 const Book = (bname, tot, read) => {
   const name = bname;
   const pageTot = Number(tot);
@@ -49,6 +55,8 @@ const DomElements = (() => {
     const openFormButton = document.querySelector('.bubble');
     const closeFormButton = document.querySelector('#closeForm');
     const addBookButton = document.querySelector('#submit-book');
+    const loginButton = document.querySelector('#login');
+    const loginErrMsg = 'Login was unsuccesful, please try again.';
 
     closeFormButton.addEventListener('click', toggleForm);
     openFormButton.addEventListener('click', () => {
@@ -60,6 +68,7 @@ const DomElements = (() => {
       App.addBook();
       toggleForm();
     });
+    loginButton.addEventListener('click', () => signInWithGoogle(displayUserInfo, () => showErrorDiv(loginErrMsg)));
   };
 
   const showErrorDiv = (message) => {
@@ -85,7 +94,7 @@ const DomElements = (() => {
     else statusNode.textContent = 'Unfinished';
   };
 
-  function createBookDiv(book) {
+  const createBookDiv = (book) => {
     const style = ['shadowOne', 'shadowTwo', 'shadowThree']; // these are equivalent to a class
     const library = document.querySelector('#library');
 
@@ -109,7 +118,7 @@ const DomElements = (() => {
     titleContainer.classList.add('center');
     titleParagraph.classList.add('title');
     if (book.getName().split('').length > 17) titleParagraph.setAttribute('style', 'font-size: 22px;');
-    fancyDivider.setAttribute('src', './images/divider.svg');
+    fancyDivider.setAttribute('src', divider);
     fancyDivider.setAttribute('alt', 'a fancy divider');
     progressParagraph.classList.add('progress');
     statusContainer.classList.add('status');
@@ -141,8 +150,27 @@ const DomElements = (() => {
     mainContainers.forEach((container) => newBook.appendChild(container));
 
     library.appendChild(newBook);
-  }
+  };
 
+  const displayUserInfo = (data) => {
+    const loginBtn = document.querySelector('#login');
+    loginBtn.setAttribute('style', 'display: none');
+
+    const { photoUrl, name } = data;
+    const userInfo = document.createElement('div');
+    const userImg = document.createElement('img');
+    const userWelcome = document.createElement('p');
+
+    userInfo.setAttribute('id', 'user-info');
+    userImg.src = photoUrl;
+    userWelcome.textContent = `${name.split(' ')[0]}'s Library`;
+
+    userInfo.appendChild(userImg);
+    userInfo.appendChild(userWelcome);
+    document.querySelector('#header').appendChild(userInfo);
+  };
+
+  document.querySelector('#closeForm').setAttribute('src', cross); // Setting up cross icon of form.
   setupListeners();
 
   return { getBookData, isInputComplete, showErrorDiv, hideErrorDiv, toggleForm, createBookDiv, resetLibrary };
