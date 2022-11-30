@@ -1,4 +1,5 @@
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
 import { signInWithGoogle, db, auth } from './firebase-config';
 
 import divider from './images/divider.svg';
@@ -127,14 +128,14 @@ const DomElements = (() => {
     progressParagraph.classList.add('progress');
     statusContainer.classList.add('status');
 
-    deleteButton.addEventListener('click', () => { App.removeBook(book); });
+    deleteButton.addEventListener('click', () => {
+      App.removeBook(book);
+    });
     increaseButton.addEventListener('click', () => {
-      book.readPage();
-      updateProgress(progressParagraph, statusContainer, book);
+      App.increasePagesRead(book, progressParagraph, statusContainer);
     });
     decreaseButton.addEventListener('click', () => {
-      book.unreadPage();
-      updateProgress(progressParagraph, statusContainer, book);
+      App.decreasePagesRead(book, progressParagraph, statusContainer);
     });
 
     deleteButton.textContent = 'x';
@@ -177,7 +178,7 @@ const DomElements = (() => {
   document.querySelector('#closeForm').setAttribute('src', cross); // Setting up cross icon of form.
   setupListeners();
 
-  return { getBookData, isInputComplete, showErrorDiv, hideErrorDiv, toggleForm, createBookDiv, resetLibrary, displayUserInfo };
+  return { getBookData, isInputComplete, showErrorDiv, hideErrorDiv, toggleForm, createBookDiv, resetLibrary, displayUserInfo, updateProgress };
 })();
 
 const Database = (() => {
@@ -238,7 +239,20 @@ const App = (() => {
   const removeBook = (book) => {
     library.remove(book);
     DomElements.resetLibrary();
+    if (auth.currentUser) Database.updateLibrary(library);
     showProjects();
+  };
+
+  const increasePagesRead = (book, progressPara, statusCont) => {
+    book.readPage();
+    DomElements.updateProgress(progressPara, statusCont, book);
+    if (auth.currentUser) Database.updateLibrary(library);
+  };
+
+  const decreasePagesRead = (book, progressPara, statusCont) => {
+    book.unreadPage();
+    DomElements.updateProgress(progressPara, statusCont, book);
+    if (auth.currentUser) Database.updateLibrary(library);
   };
 
   const loadUserLibrary = (userLibrary) => {
@@ -252,12 +266,15 @@ const App = (() => {
     const name = response.user.displayName;
     const photoUrl = response.user.photoURL;
     const profileId = response.user.uid;
-
     DomElements.displayUserInfo({ name, photoUrl });
     const userLibrary = await Database.getUserLibrary(profileId);
     loadUserLibrary(userLibrary);
     showProjects();
   };
 
-  return { addBook, removeBook, onLoginSuccess };
+  onAuthStateChanged(auth, (user) => {
+    if (user) onLoginSuccess({ user: user });
+  });
+
+  return { addBook, removeBook, onLoginSuccess, increasePagesRead, decreasePagesRead };
 })();
