@@ -1,5 +1,5 @@
-import { doc, getDoc } from 'firebase/firestore';
-import { signInWithGoogle, db } from './firebase-config';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { signInWithGoogle, db, auth } from './firebase-config';
 
 import divider from './images/divider.svg';
 import cross from './images/Flat_cross_icon.svg';
@@ -9,15 +9,23 @@ const Book = (bname, tot, read, pstyle) => {
   const name = bname;
   const pageTot = Number(tot);
   let pageRead = Number(read);
-  let style = pstyle || false;
 
   const readPage = () => { pageRead = pageRead < pageTot ? pageRead += 1 : pageRead; };
   const unreadPage = () => { pageRead = pageRead === 0 ? pageRead : pageRead -= 1; };
   const getName = () => name.slice();
   const getTot = () => pageTot;
   const getRead = () => pageRead;
+  const setStyle = () => {
+    const selectors = ['shadowOne', 'shadowTwo', 'shadowThree']; // these are css class selectors
+    const randomNumber = Math.floor(Math.random() * 3); // find them in style.css for more info
+    const check = randomNumber === 3 ? 2 : randomNumber;
+    return selectors[check];
+  };
 
-  return { getName, getTot, getRead, style, readPage, unreadPage };
+  const style = pstyle || setStyle();
+  const getStyle = () => style;
+
+  return { getName, getTot, getRead, getStyle, readPage, unreadPage };
 };
 
 const Library = (books) => {
@@ -95,7 +103,6 @@ const DomElements = (() => {
   };
 
   const createBookDiv = (book) => {
-    const style = ['shadowOne', 'shadowTwo', 'shadowThree']; // these are equivalent to a class
     const library = document.querySelector('#library');
 
     const newBook = document.createElement('div'); // main container
@@ -109,11 +116,8 @@ const DomElements = (() => {
     const decreaseButton = document.createElement('button');
     const statusContainer = document.createElement('p');
 
-    const randomNumber = Math.floor(Math.random() * 3);
-
     newBook.classList.add('book');
-    if (!book.style) book.style = style[randomNumber];
-    newBook.classList.add(book.style);
+    newBook.classList.add(book.getStyle());
     deleteButton.classList.add('deleteBook');
     titleContainer.classList.add('center');
     titleParagraph.classList.add('title');
@@ -177,13 +181,33 @@ const DomElements = (() => {
 })();
 
 const Database = (() => {
-  const getUserLibrary = async (userAuthId) => {
+  const getUserLibrary = async () => {
+    const userAuthId = auth.currentUser.uid;
     const docRef = doc(db, 'users', userAuthId);
     const userLibrary = await getDoc(docRef);
     return userLibrary.data(); // extracts library from the response object
   };
 
-  return { getUserLibrary };
+  const convertLibrary = (library) => {
+    const convertedLib = library.getBooks().map((book) => {
+      const name = book.getName();
+      const pageTot = book.getTot();
+      const pageRead = book.getRead();
+      const style = book.getStyle();
+
+      return { name, pageTot, pageRead, style };
+    });
+    return convertedLib;
+  };
+
+  const updateLibrary = async (library) => {
+    const userAuthId = auth.currentUser.uid;
+    const docRef = doc(db, 'users', userAuthId);
+    const convertedLib = convertLibrary(library);
+    setDoc(docRef, { library: convertedLib }, { merge: true });
+  };
+
+  return { getUserLibrary, updateLibrary };
 })();
 
 const App = (() => {
@@ -207,6 +231,7 @@ const App = (() => {
     const book = Book(name, total, read);
     library.add(book);
     DomElements.resetLibrary();
+    if (auth.currentUser) Database.updateLibrary(library);
     showProjects();
   };
 

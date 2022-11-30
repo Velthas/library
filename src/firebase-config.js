@@ -30,4 +30,4 @@ const signInWithGoogle = (handleSuccess, handleError) => {
 
 const db = getFirestore(app);
 
-export { signInWithGoogle, db };
+export { signInWithGoogle, db, auth };
