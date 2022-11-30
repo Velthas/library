@@ -275,6 +275,7 @@ const App = (() => {
   };
 
   const onLoginSuccess = async (response) => {
+    DomElements.resetLibrary();
     const name = response.user.displayName;
     const photoUrl = response.user.photoURL;
     const profileId = response.user.uid;
@@ -287,6 +288,7 @@ const App = (() => {
   const onLogout = () => {
     DomElements.displayLogin();
     DomElements.resetLibrary();
+    library = Library();
   };
 
   onAuthStateChanged(auth, (user) => {
