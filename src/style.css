@@ -119,6 +119,7 @@ body {
     height: 100%;
     width: 100%;
 
+    z-index: 2;
     background-color: rgba(0, 0, 0, 0.4);
 }
 
@@ -215,6 +216,8 @@ button.submit{
 }
 
 .book {
+    position: relative;
+
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -225,6 +228,20 @@ button.submit{
 
     font-family: 'Lobster', cursive;
     border-top-left-radius: 16px;
+}
+
+.book::after {
+    width: 50px;
+    height: 50px;
+
+    content: '';
+    position: absolute;
+    z-index: -1;
+    bottom: -35px;
+    right: 0px;
+
+    background-image: url(./images/bookmark.png);
+    background-size: cover;
 }
 
 .shadowOne {
@@ -345,12 +362,10 @@ p.progress {
 
 @media screen and (max-width: 700px) {
     #header {
-        font-size: 20px;
         margin-bottom: 0
     }
 
     #header p {
-        font-size: 15px;
         width: 60vw
     }
 
