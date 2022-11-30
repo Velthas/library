@@ -1,14 +1,15 @@
-import signInWithGoogle from './firebase-config';
+import { doc, getDoc } from 'firebase/firestore';
+import { signInWithGoogle, db } from './firebase-config';
 
 import divider from './images/divider.svg';
 import cross from './images/Flat_cross_icon.svg';
 import './style.css';
 
-const Book = (bname, tot, read) => {
+const Book = (bname, tot, read, pstyle) => {
   const name = bname;
   const pageTot = Number(tot);
   let pageRead = Number(read);
-  let style = false; // Will be assigned a string in DomElements.createBookDiv
+  let style = pstyle || false;
 
   const readPage = () => { pageRead = pageRead < pageTot ? pageRead += 1 : pageRead; };
   const unreadPage = () => { pageRead = pageRead === 0 ? pageRead : pageRead -= 1; };
@@ -19,8 +20,8 @@ const Book = (bname, tot, read) => {
   return { getName, getTot, getRead, style, readPage, unreadPage };
 };
 
-const Library = () => {
-  const library = [];
+const Library = (books) => {
+  const library = books || [];
 
   const add = (book) => library.push(book);
   const remove = (book) => library.splice(library.indexOf(book), 1);
@@ -56,8 +57,8 @@ const DomElements = (() => {
     const closeFormButton = document.querySelector('#closeForm');
     const addBookButton = document.querySelector('#submit-book');
     const loginButton = document.querySelector('#login');
-    const loginErrMsg = 'Login was unsuccesful, please try again.';
 
+    loginButton.addEventListener('click', () => signInWithGoogle(App.onLoginSuccess, showErrorDiv));
     closeFormButton.addEventListener('click', toggleForm);
     openFormButton.addEventListener('click', () => {
       toggleForm();
@@ -68,7 +69,6 @@ const DomElements = (() => {
       App.addBook();
       toggleForm();
     });
-    loginButton.addEventListener('click', () => signInWithGoogle(displayUserInfo, () => showErrorDiv(loginErrMsg)));
   };
 
   const showErrorDiv = (message) => {
@@ -173,11 +173,21 @@ const DomElements = (() => {
   document.querySelector('#closeForm').setAttribute('src', cross); // Setting up cross icon of form.
   setupListeners();
 
-  return { getBookData, isInputComplete, showErrorDiv, hideErrorDiv, toggleForm, createBookDiv, resetLibrary };
+  return { getBookData, isInputComplete, showErrorDiv, hideErrorDiv, toggleForm, createBookDiv, resetLibrary, displayUserInfo };
+})();
+
+const Database = (() => {
+  const getUserLibrary = async (userAuthId) => {
+    const docRef = doc(db, 'users', userAuthId);
+    const userLibrary = await getDoc(docRef);
+    return userLibrary.data(); // extracts library from the response object
+  };
+
+  return { getUserLibrary };
 })();
 
 const App = (() => {
-  const library = Library();
+  let library = Library();
 
   const showProjects = () => {
     const books = library.getBooks();
@@ -206,5 +216,23 @@ const App = (() => {
     showProjects();
   };
 
-  return { addBook, removeBook };
+  const loadUserLibrary = (userLibrary) => {
+    const updatedLibrary = userLibrary.library
+      .map((book) => Book(book.name, book.pageTot, book.pageRead, book.style));
+    const loadedLibrary = Library(updatedLibrary);
+    library = loadedLibrary;
+  };
+
+  const onLoginSuccess = async (response) => {
+    const name = response.user.displayName;
+    const photoUrl = response.user.photoURL;
+    const profileId = response.user.uid;
+
+    DomElements.displayUserInfo({ name, photoUrl });
+    const userLibrary = await Database.getUserLibrary(profileId);
+    loadUserLibrary(userLibrary);
+    showProjects();
+  };
+
+  return { addBook, removeBook, onLoginSuccess };
 })();

@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { getFirestore, collection, doc, getDoc, getDocs } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCbY03FNv8V7rQErFIkQDvNCaPOzs-gelE',
@@ -15,17 +16,18 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
+const auth = getAuth(app); // Setup auth services
+const provider = new GoogleAuthProvider(); // Use google as provider
 
 const signInWithGoogle = (handleSuccess, handleError) => {
   signInWithPopup(auth, provider).then((response) => {
-    const name = response.user.displayName;
-    const photoUrl = response.user.photoURL;
-    handleSuccess({ name, photoUrl });
+    console.log(response);
+    handleSuccess(response);
   }).catch((error) => {
-    handleError();
+    handleError('There was an issue with authentication. Please try again');
   });
 };
 
-export default signInWithGoogle;
+const db = getFirestore(app);
+
+export { signInWithGoogle, db };
