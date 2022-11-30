@@ -1,5 +1,5 @@
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { signInWithGoogle, db, auth } from './firebase-config';
 
 import divider from './images/divider.svg';
@@ -165,20 +165,32 @@ const DomElements = (() => {
     const userInfo = document.createElement('div');
     const userImg = document.createElement('img');
     const userWelcome = document.createElement('p');
+    const signOutPara = document.createElement('p');
 
     userInfo.setAttribute('id', 'user-info');
     userImg.src = photoUrl;
     userWelcome.textContent = `${name.split(' ')[0]}'s Library`;
+    signOutPara.setAttribute('id', 'sign-out')
+    signOutPara.textContent = 'Sign Out';
+
+    signOutPara.addEventListener('click', () => signOut(auth));
 
     userInfo.appendChild(userImg);
     userInfo.appendChild(userWelcome);
+    userInfo.appendChild(signOutPara);
     document.querySelector('#header').appendChild(userInfo);
+  };
+
+  const displayLogin = () => {
+    const userInfo = document.querySelector('#user-info');
+    if (userInfo) userInfo.remove();
+    document.querySelector('#login').setAttribute('style', '');
   };
 
   document.querySelector('#closeForm').setAttribute('src', cross); // Setting up cross icon of form.
   setupListeners();
 
-  return { getBookData, isInputComplete, showErrorDiv, hideErrorDiv, toggleForm, createBookDiv, resetLibrary, displayUserInfo, updateProgress };
+  return { getBookData, isInputComplete, showErrorDiv, hideErrorDiv, toggleForm, createBookDiv, resetLibrary, displayUserInfo, updateProgress, displayLogin };
 })();
 
 const Database = (() => {
@@ -272,8 +284,14 @@ const App = (() => {
     showProjects();
   };
 
+  const onLogout = () => {
+    DomElements.displayLogin();
+    DomElements.resetLibrary();
+  };
+
   onAuthStateChanged(auth, (user) => {
-    if (user) onLoginSuccess({ user: user });
+    if (user) onLoginSuccess({ user: user }); // display user info on succesful login
+    else onLogout() // removes user info and displays login button
   });
 
   return { addBook, removeBook, onLoginSuccess, increasePagesRead, decreasePagesRead };

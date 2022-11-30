@@ -72,6 +72,15 @@ body {
     border-radius: 25px;
 }
 
+#user-info p#sign-out {
+    font-size: 0.8rem;
+    font-family: sans-serif;
+    text-decoration: underline;
+
+    cursor: pointer;
+    margin-top: 5px;
+}
+
 
 .bubble {
     display: flex;
@@ -404,6 +413,5 @@ p.progress {
 
     #header p {
         width: 100vw;
-        font-size: 12
     }
 }
