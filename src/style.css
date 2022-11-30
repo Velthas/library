@@ -161,21 +161,19 @@ body {
 label,
 form {
     display: block;
+    align-self: flex-start;
 }
 
 .formContainer form {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    align-items: center;
-
-    text-align: center;
 
     height: 350px;
-    width: 350px;
 
     color: black;
     font-size: 18px;
+    margin: 0 auto;
 }
 
 .formContainer input {
@@ -183,21 +181,29 @@ form {
     height: 50px;
     font-size: 15px;
 
-    border: none;
+    border: 1px solid #e6e6e6;
     border-radius: 5px;
 
-    padding: 10px;
+    padding: 5px;
     margin: 5px 0px 16px 0px;
 
-    background-color: #efd4ad;
-    color: #85673a;
+    background-color: #fff;
+    color: #757575;
+
+    transition: 0.15s ease-in;
+}
+
+.formContainer input:focus-visible {
+    outline: 2px solid #d4a665;
 }
 
 input::placeholder {
-    color: #78878a
+    color: #757575;
 }
 
 button.submit{
+    align-self: center;
+
     width: 35px;
     height: 35px;
 
@@ -213,15 +219,14 @@ button.submit{
 }
 
 #library {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    gap: 80px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 300px));
+    gap: 90px 45px;
 
-    width: 100%;
-    padding: 40px 60px 90px 15px;
-
+    justify-content: center;
     
+    width: 100%;
+    padding: 40px 60px;
 }
 
 .book {
@@ -247,7 +252,7 @@ button.submit{
     position: absolute;
     z-index: -1;
     bottom: -35px;
-    right: 0px;
+    left: 40px;
 
     background-image: url(./images/bookmark.png);
     background-size: cover;
@@ -306,6 +311,7 @@ button.submit{
 .book img {
     height: 100px;
 }
+
 .center {
     display: flex;
     flex-direction: column;
@@ -390,17 +396,15 @@ p.progress {
         height: 450px;
     }
 
-    .formContainer {
-        gap: 0px;
-    }
-
     .formContainer form {
-        font-size: 15px;
+        font-size: 1rem;
+        font-family: sans-serif;
         width: 250px;
     }
 
     .formContainer input {
-        width: 200px;
+        width: 225px;
+        height: 40px;
         font-size: 12px;
     }
 
