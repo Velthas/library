@@ -170,7 +170,7 @@ const DomElements = (() => {
     userInfo.setAttribute('id', 'user-info');
     userImg.src = photoUrl;
     userWelcome.textContent = `${name.split(' ')[0]}'s Library`;
-    signOutPara.setAttribute('id', 'sign-out')
+    signOutPara.setAttribute('id', 'sign-out');
     signOutPara.textContent = 'Sign Out';
 
     signOutPara.addEventListener('click', () => signOut(auth));
@@ -293,7 +293,7 @@ const App = (() => {
 
   onAuthStateChanged(auth, (user) => {
     if (user) onLoginSuccess({ user: user }); // display user info on succesful login
-    else onLogout() // removes user info and displays login button
+    else onLogout(); // removes user info and displays login button
   });
 
   return { addBook, removeBook, onLoginSuccess, increasePagesRead, decreasePagesRead };
